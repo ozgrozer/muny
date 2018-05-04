@@ -2,7 +2,7 @@
   "name": "free-site",
   "scripts": {
     "start": "parcel ./src/html/index.html --out-dir ./dist --public-url / --port 1111",
-    "build": "parcel build ./src/html/index.html --out-dir ./build --public-url /"
+    "build": "parcel build ./src/html/index.html --out-dir ./docs --public-url /"
   },
   "license": "MIT",
   "dependencies": {
