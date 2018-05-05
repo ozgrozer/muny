@@ -17,12 +17,11 @@ class App extends React.Component {
   constructor () {
     super()
     this.state = {
-      formItems: {
-        task: ''
-      },
+      formItemTask: '',
       tasksLoading: true,
       tasks: {},
-      lastTaskId: null
+      lastTaskId: null,
+      disabledForm: false
     }
   }
 
@@ -57,44 +56,46 @@ class App extends React.Component {
     })
   }
 
-  emptyFormItems () {
-    const formItems = this.state.formItems
-
-    Object.keys(formItems).map((itemName) => {
-      formItems[itemName] = ''
-    })
-
-    this.setState({
-      formItems: formItems
-    })
-  }
-
   handleForm (e) {
     e.preventDefault()
     const form = e.target
     form.classList.add('was-validated')
 
     if (form.checkValidity()) {
-      this.emptyFormItems()
       form.classList.remove('was-validated')
+      this.addNewTask()
     } else {
       form.classList.add('was-validated')
     }
   }
 
   handleInput (e) {
-    const item = e.target
-    const formItems = this.state.formItems
-
-    formItems[item.name] = item.value
-
     this.setState({
-      formItems: formItems
+      formItemTask: e.target.value
     })
   }
 
-  newTask () {
-    console.log('newTask')
+  addNewTask () {
+    this.setState({ disabledForm: true })
+
+    const done = false
+    const task = this.state.formItemTask
+    const newId = parseInt(this.state.lastTaskId) + 1
+    const tasks = this.state.tasks
+
+    firebase.database().ref('/' + newId)
+      .set({ task, done })
+      .then((res) => {
+        tasks[newId] = { task, done }
+
+        this.setState({
+          formItemTask: '',
+          disabledForm: false,
+          tasks
+        })
+
+        this.task.focus()
+      })
   }
 
   deleteTask () {
@@ -113,7 +114,7 @@ class App extends React.Component {
       tasks = <li className='list-group-item'>Loading...</li>
     } else {
       if (Object.keys(getTasks).length) {
-        tasks = Object.keys(getTasks).map((i) => {
+        tasks = Object.keys(getTasks).reverse().map((i) => {
           const getTask = getTasks[i]
           const checked = getTask.done || false
           const taskName = getTask.done ? (<strike>{getTask.task}</strike>) : getTask.task
@@ -143,15 +144,17 @@ class App extends React.Component {
           </p>
 
           <form noValidate onSubmit={this.handleForm.bind(this)}>
-            <div className='form-group'>
-              <input type='text' name='task' placeholder='New task' className='form-control form-control-lg' required value={this.state.formItems.task} onChange={this.handleInput.bind(this)} />
-              <div className='invalid-feedback'>
-                You didn't write something
+            <fieldset disabled={this.state.disabledForm}>
+              <div className='form-group'>
+                <input type='text' name='task' placeholder='New task' className='form-control form-control-lg' required value={this.state.formItemTask} onChange={this.handleInput.bind(this)} ref={(input) => { this.task = input }} />
+                <div className='invalid-feedback'>
+                  You didn't write something
+                </div>
               </div>
-            </div>
-            <div className='form-group'>
-              <button type='submit' className='btn btn-primary btn-lg btn-block'>Add</button>
-            </div>
+              <div className='form-group'>
+                <button type='submit' className='btn btn-primary btn-lg btn-block'>Add</button>
+              </div>
+            </fieldset>
           </form>
 
           <div className='card'>
