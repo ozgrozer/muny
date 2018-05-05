@@ -1,3 +1,3 @@
-# free-site
+# muny
 
-[ozgrozer.ga](http://ozgrozer.ga)
+[muny.ml](http://muny.ml)
