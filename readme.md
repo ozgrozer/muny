@@ -11,3 +11,5 @@ A todo app with free resources
 3. [GitHub Pages](https://pages.github.com/) for free web hosting.
 4. [Let's Encrypt](https://letsencrypt.org/) for free SSL certificate.
 5. [Firebase](https://firebase.google.com/) for free database.
+6. [Git](https://git-scm.com/) for free version control.
+7. [Atom](https://atom.io/) for free text editor.
