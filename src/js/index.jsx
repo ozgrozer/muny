@@ -86,20 +86,32 @@ class App extends React.Component {
     firebase.database().ref('/' + newId)
       .set({ task, done })
       .then((res) => {
-        tasks[newId] = { task, done }
+        if (res !== 'undefined') {
+          tasks[newId] = { task, done }
 
-        this.setState({
-          formItemTask: '',
-          disabledForm: false,
-          tasks
-        })
+          this.setState({
+            formItemTask: '',
+            disabledForm: false,
+            tasks
+          })
 
-        this.task.focus()
+          this.inputTask.focus()
+        }
       })
   }
 
-  deleteTask () {
-    console.log('deleteTask')
+  deleteTask (taskId) {
+    const tasks = this.state.tasks
+
+    firebase.database().ref('/' + taskId)
+      .remove()
+      .then((res) => {
+        if (res !== 'undefined') {
+          delete tasks[taskId]
+
+          this.setState({ tasks })
+        }
+      })
   }
 
   doneOrUndoneTask () {
@@ -146,7 +158,7 @@ class App extends React.Component {
           <form noValidate onSubmit={this.handleForm.bind(this)}>
             <fieldset disabled={this.state.disabledForm}>
               <div className='form-group'>
-                <input type='text' name='task' placeholder='New task' className='form-control form-control-lg' required value={this.state.formItemTask} onChange={this.handleInput.bind(this)} ref={(input) => { this.task = input }} />
+                <input type='text' name='task' placeholder='New task' className='form-control form-control-lg' required value={this.state.formItemTask} onChange={this.handleInput.bind(this)} ref={(input) => { this.inputTask = input }} />
                 <div className='invalid-feedback'>
                   You didn't write something
                 </div>
