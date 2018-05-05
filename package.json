@@ -1,13 +1,15 @@
 {
-  "name": "free-site",
+  "name": "muny",
   "scripts": {
     "start": "parcel ./src/html/index.html --out-dir ./dist --public-url / --port 1111",
+    "prebuild": "cd docs && pwd && find . ! -name 'CNAME' -type f -exec rm -f {} +",
     "build": "parcel build ./src/html/index.html --out-dir ./docs --public-url /"
   },
   "license": "MIT",
   "dependencies": {
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "bootstrap": "^4.1.1",
     "jquery": "1.9.1 - 3",
     "node-sass": "^4.9.0",
     "parcel-bundler": "^1.8.1",
