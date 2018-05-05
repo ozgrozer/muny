@@ -92,6 +92,7 @@ class App extends React.Component {
           this.setState({
             formItemTask: '',
             disabledForm: false,
+            lastTaskId: newId,
             tasks
           })
 
