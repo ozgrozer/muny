@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import firebase from 'firebase'
+import axios from 'axios'
 
 import './../css/style.scss'
 
@@ -21,11 +22,20 @@ class App extends React.Component {
       tasksLoading: true,
       tasks: {},
       lastTaskId: 0,
-      disabledForm: false
+      disabledForm: false,
+      clientIp: ''
     }
   }
 
   componentDidMount () {
+    axios
+      .get('https://json.geoiplookup.io/api')
+      .then((res) => {
+        this.setState({
+          clientIp: res.data.ip
+        })
+      })
+
     const app = firebase.initializeApp(firebaseConfig)
     const database = app.database()
 
@@ -82,9 +92,10 @@ class App extends React.Component {
     const task = this.state.formItemTask
     const newId = parseInt(this.state.lastTaskId) + 1
     const tasks = this.state.tasks
+    const clientIp = this.state.clientIp
 
     firebase.database().ref('/' + newId)
-      .set({ task, done })
+      .set({ task, done, clientIp })
       .then((res) => {
         if (res !== 'undefined') {
           tasks[newId] = { task, done }
@@ -119,9 +130,10 @@ class App extends React.Component {
     const tasks = this.state.tasks
     const task = tasks[taskId].task
     const done = !checked
+    const clientIp = this.state.clientIp
 
     firebase.database().ref('/' + taskId)
-      .set({ task, done })
+      .set({ task, done, clientIp })
       .then((res) => {
         if (res !== 'undefined') {
           tasks[taskId].done = done
