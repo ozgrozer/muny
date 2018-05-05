@@ -1,5 +1,6 @@
 {
   "name": "muny",
+  "description": "A todo app with free resources",
   "scripts": {
     "start": "parcel ./src/html/index.html --out-dir ./dist --public-url / --port 1111",
     "prebuild": "cd docs && pwd && find . ! -name 'CNAME' -type f -exec rm -f {} +",
