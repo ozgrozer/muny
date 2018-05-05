@@ -20,7 +20,7 @@ class App extends React.Component {
       formItemTask: '',
       tasksLoading: true,
       tasks: {},
-      lastTaskId: null,
+      lastTaskId: 0,
       disabledForm: false
     }
   }
@@ -115,8 +115,20 @@ class App extends React.Component {
       })
   }
 
-  doneOrUndoneTask () {
-    console.log('doneOrUndoneTask')
+  doneOrUndoneTask (taskId, checked) {
+    const tasks = this.state.tasks
+    const task = tasks[taskId].task
+    const done = !checked
+
+    firebase.database().ref('/' + taskId)
+      .set({ task, done })
+      .then((res) => {
+        if (res !== 'undefined') {
+          tasks[taskId].done = done
+
+          this.setState({ tasks })
+        }
+      })
   }
 
   render () {
@@ -130,12 +142,12 @@ class App extends React.Component {
         tasks = Object.keys(getTasks).reverse().map((i) => {
           const getTask = getTasks[i]
           const checked = getTask.done || false
-          const taskName = getTask.done ? (<strike>{getTask.task}</strike>) : getTask.task
+          const taskName = getTask.done ? (<strike>{getTask.task || 'Unnamed'}</strike>) : getTask.task || 'Unnamed'
 
           return (
             <li key={i} className='list-group-item'>
               <div className='custom-control custom-checkbox'>
-                <input type='checkbox' className='custom-control-input' id={`customCheck${i}`} checked={checked} onChange={this.doneOrUndoneTask.bind(this)} />
+                <input type='checkbox' className='custom-control-input' id={`customCheck${i}`} checked={checked} onChange={this.doneOrUndoneTask.bind(this, i, checked)} />
                 <label className='custom-control-label' htmlFor={`customCheck${i}`}>{taskName}</label>
               </div>
 
