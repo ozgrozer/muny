@@ -1,3 +1,4 @@
 # muny
+A todo app with free resources.
 
-[muny.ml](http://muny.ml)
+[https://muny.ml](https://muny.ml)
