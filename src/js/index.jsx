@@ -1,7 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import firebase from 'firebase'
 
 import './../css/style.scss'
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyDYRnhcuc1eT1LYYvszACo8HuFZkkI2Oz0',
+  authDomain: 'ozgrozer-muny.firebaseapp.com',
+  databaseURL: 'https://ozgrozer-muny.firebaseio.com',
+  projectId: 'ozgrozer-muny',
+  storageBucket: 'ozgrozer-muny.appspot.com',
+  messagingSenderId: '197981362707'
+}
 
 class App extends React.Component {
   constructor () {
@@ -10,9 +20,41 @@ class App extends React.Component {
       formItems: {
         task: ''
       },
+      tasksLoading: true,
       tasks: {},
       lastTaskId: null
     }
+  }
+
+  componentDidMount () {
+    const app = firebase.initializeApp(firebaseConfig)
+    const database = app.database()
+
+    const ref = database.ref('/')
+    ref.once('value').then((db) => {
+      const todos = db.val()
+      const tasks = {}
+
+      if (todos) {
+        this.setState({
+          lastTaskId: Object.keys(todos).pop()
+        })
+
+        for (var key in todos) {
+          var todo = todos[key]
+          tasks[key] = {
+            done: todo.done,
+            task: todo.task
+          }
+        }
+
+        this.setState({ tasks })
+      }
+
+      this.setState({
+        tasksLoading: false
+      })
+    })
   }
 
   emptyFormItems () {
@@ -67,25 +109,29 @@ class App extends React.Component {
     let tasks
     const getTasks = this.state.tasks
 
-    if (Object.keys(getTasks).length) {
-      tasks = Object.keys(getTasks).map((i) => {
-        const getTask = getTasks[i]
-        const checked = getTask.done || false
-        const taskName = getTask.done ? (<strike>{getTask.task}</strike>) : getTask.task
-
-        return (
-          <li key={i} className='list-group-item'>
-            <div className='custom-control custom-checkbox'>
-              <input type='checkbox' className='custom-control-input' id={`customCheck${i}`} checked={checked} onChange={this.doneOrUndoneTask.bind(this)} />
-              <label className='custom-control-label' htmlFor={`customCheck${i}`}>{taskName}</label>
-            </div>
-
-            <button className='btn btn-danger btn-sm deleteTask' onClick={this.deleteTask.bind(this)}>Delete</button>
-          </li>
-        )
-      })
-    } else {
+    if (this.state.tasksLoading) {
       tasks = <li className='list-group-item'>Loading...</li>
+    } else {
+      if (Object.keys(getTasks).length) {
+        tasks = Object.keys(getTasks).map((i) => {
+          const getTask = getTasks[i]
+          const checked = getTask.done || false
+          const taskName = getTask.done ? (<strike>{getTask.task}</strike>) : getTask.task
+
+          return (
+            <li key={i} className='list-group-item'>
+              <div className='custom-control custom-checkbox'>
+                <input type='checkbox' className='custom-control-input' id={`customCheck${i}`} checked={checked} onChange={this.doneOrUndoneTask.bind(this)} />
+                <label className='custom-control-label' htmlFor={`customCheck${i}`}>{taskName}</label>
+              </div>
+
+              <button className='btn btn-danger btn-sm deleteTask' onClick={this.deleteTask.bind(this, i)}>Delete</button>
+            </li>
+          )
+        })
+      } else {
+        tasks = <li className='list-group-item'>No task found.</li>
+      }
     }
 
     return (
