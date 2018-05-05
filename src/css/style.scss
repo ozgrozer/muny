@@ -1,11 +1,32 @@
 @import './../../node_modules/bootstrap/scss/bootstrap';
 
 body {
-  background-color: #f5f5f5;
+  background-color: #fff;
 }
 
 .container2 {
-  width: 500px;
   margin: auto;
+  max-width: 500px;
   margin-top: 100px;
+}
+
+.card {
+  margin-top: 50px;
+}
+
+.list-group-item {
+  &:hover {
+    .deleteTask {
+      display: block;
+    }
+  }
+
+  .deleteTask {
+    top: 12px;
+    right: 20px;
+    display: none;
+    font-size: 10px;
+    position: absolute;
+    text-transform: uppercase;
+  }
 }
