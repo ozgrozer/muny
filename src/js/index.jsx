@@ -273,7 +273,7 @@ class App extends React.Component {
                         }
                         onClick={this.changeFilter.bind(this, 'all')}
                       >
-                        All
+                        All ({this.state.tasksCount.all})
                       </button>
 
                       <button
@@ -283,7 +283,7 @@ class App extends React.Component {
                         }
                         onClick={this.changeFilter.bind(this, 'active')}
                       >
-                        Active
+                        Active ({this.state.tasksCount.active})
                       </button>
 
                       <button
@@ -293,7 +293,7 @@ class App extends React.Component {
                         }
                         onClick={this.changeFilter.bind(this, 'completed')}
                       >
-                        Completed
+                        Completed ({this.state.tasksCount.completed})
                       </button>
                     </div>
                   </div>
