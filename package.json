@@ -4,7 +4,7 @@
   "scripts": {
     "start": "parcel ./src/html/index.html --out-dir ./dist --public-url / --port 1111",
     "prebuild": "cd docs && pwd && find . ! -name 'CNAME' -type f -exec rm -f {} +",
-    "build": "parcel build ./src/html/index.html --out-dir ./docs --public-url /"
+    "build": "parcel build ./src/html/index.html --out-dir ./docs --public-url / --no-source-maps"
   },
   "license": "MIT",
   "dependencies": {
