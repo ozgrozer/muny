@@ -19,12 +19,13 @@ A todo app with free resources
 
 ## Dependencies
 
-1. [axios](https://www.npmjs.com/package/axios) for to make XHR requests.
-2. [babel-preset-env](https://www.npmjs.com/package/babel-preset-env) for to compile ES6+ to ES5.
-3. [babel-preset-react](https://www.npmjs.com/package/babel-preset-react) for to compile React syntax.
-4. [bootstrap](https://www.npmjs.com/package/bootstrap) for front-end UI. (CSS)
-5. [firebase](https://www.npmjs.com/package/firebase) for to use Firebase.
-6. [node-sass](https://www.npmjs.com/package/node-sass) for compile SCSS to CSS.
-7. [parcel-bundler](https://www.npmjs.com/package/parcel-bundler) for to bundle app.
-8. [react](https://www.npmjs.com/package/react) for front-end UI. (JS)
-9. [react-dom](https://www.npmjs.com/package/react-dom) for to render React app.
+1. [@firebase/app](https://www.npmjs.com/package/@firebase/app) for to use Firebase plugins.
+2. [@firebase/database](https://www.npmjs.com/package/@firebase/database) for to use Firebase database.
+3. [axios](https://www.npmjs.com/package/axios) for to make XHR requests.
+4. [babel-preset-env](https://www.npmjs.com/package/babel-preset-env) for to compile ES6+ to ES5.
+5. [babel-preset-react](https://www.npmjs.com/package/babel-preset-react) for to compile React syntax.
+6. [bootstrap](https://www.npmjs.com/package/bootstrap) for to make front-end UI. (CSS)
+7. [node-sass](https://www.npmjs.com/package/node-sass) for compile SCSS to CSS.
+8. [parcel-bundler](https://www.npmjs.com/package/parcel-bundler) for to bundle app.
+9. [react](https://www.npmjs.com/package/react) for to make front-end UI. (JS)
+10. [react-dom](https://www.npmjs.com/package/react-dom) for to render React app.
