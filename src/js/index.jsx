@@ -184,12 +184,12 @@ class App extends React.Component {
           )
         })
       } else {
-        tasks = <li className='list-group-item'>No task found.</li>
+        tasks = <li className='list-group-item'>No task found</li>
       }
     }
 
-    const activeTasks = this.state.tasksCount.active
     let itemsLeft
+    const activeTasks = this.state.tasksCount.active
     if (activeTasks > 1) {
       itemsLeft = `${activeTasks} items left`
     } else if (activeTasks === 1) {
@@ -231,18 +231,22 @@ class App extends React.Component {
               </ul>
             </div>
 
-            <div className='card-footer'>
-              <div className='float-left'>
-                {itemsLeft}
-              </div>
-              <div className='float-right'>
-                <div className='btn-group'>
-                  <button className='btn btn-light btn-sm active'>All</button>
-                  <button className='btn btn-light btn-sm'>Active</button>
-                  <button className='btn btn-light btn-sm'>Completed</button>
+            {
+              !this.state.tasksLoading && Object.keys(getTasks).length ? (
+                <div className='card-footer'>
+                  <div className='float-left'>
+                    {itemsLeft}
+                  </div>
+                  <div className='float-right'>
+                    <div className='btn-group'>
+                      <button className='btn btn-light btn-sm active'>All</button>
+                      <button className='btn btn-light btn-sm'>Active</button>
+                      <button className='btn btn-light btn-sm'>Completed</button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              ) : ''
+            }
           </div>
         </div>
       </div>
