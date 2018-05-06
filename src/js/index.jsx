@@ -1,10 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
-import { firebase } from '@firebase/app'
-import '@firebase/database'
 
-import firebaseConfig from './firebaseConfig'
+import fire from './fire'
 import './../css/style.scss'
 
 class App extends React.Component {
@@ -29,34 +27,32 @@ class App extends React.Component {
         })
       })
 
-    const app = firebase.initializeApp(firebaseConfig)
-    const database = app.database()
+    fire.database().ref('/')
+      .once('value')
+      .then((db) => {
+        const todos = db.val()
+        const tasks = {}
 
-    const ref = database.ref('/')
-    ref.once('value').then((db) => {
-      const todos = db.val()
-      const tasks = {}
+        if (todos) {
+          this.setState({
+            lastTaskId: Object.keys(todos).pop()
+          })
 
-      if (todos) {
-        this.setState({
-          lastTaskId: Object.keys(todos).pop()
-        })
-
-        for (var key in todos) {
-          var todo = todos[key]
-          tasks[key] = {
-            done: todo.done,
-            task: todo.task
+          for (var key in todos) {
+            var todo = todos[key]
+            tasks[key] = {
+              done: todo.done,
+              task: todo.task
+            }
           }
+
+          this.setState({ tasks })
         }
 
-        this.setState({ tasks })
-      }
-
-      this.setState({
-        tasksLoading: false
+        this.setState({
+          tasksLoading: false
+        })
       })
-    })
   }
 
   handleForm (e) {
@@ -87,7 +83,7 @@ class App extends React.Component {
     const tasks = this.state.tasks
     const clientIp = this.state.clientIp
 
-    firebase.database().ref('/' + newId)
+    fire.database().ref('/' + newId)
       .set({ task, done, clientIp })
       .then((res) => {
         if (res !== 'undefined') {
@@ -108,7 +104,7 @@ class App extends React.Component {
   deleteTask (taskId) {
     const tasks = this.state.tasks
 
-    firebase.database().ref('/' + taskId)
+    fire.database().ref('/' + taskId)
       .remove()
       .then((res) => {
         if (res !== 'undefined') {
@@ -125,7 +121,7 @@ class App extends React.Component {
     const done = !checked
     const clientIp = this.state.clientIp
 
-    firebase.database().ref('/' + taskId)
+    fire.database().ref('/' + taskId)
       .set({ task, done, clientIp })
       .then((res) => {
         if (res !== 'undefined') {
@@ -191,9 +187,12 @@ class App extends React.Component {
             <div className='card-header'>
               <b>Tasks</b>
             </div>
-            <ul className='list-group list-group-flush'>
-              {tasks}
-            </ul>
+
+            <div>
+              <ul className='list-group list-group-flush'>
+                {tasks}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

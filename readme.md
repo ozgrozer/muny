@@ -11,7 +11,7 @@ A todo app with free resources
 3. Create `A` records in [Freenom](https://my.freenom.com/clientarea.php?action=domains&language=english) (`Manage Domain/Manage Freenom DNS`) to point your domain to the [GitHub IP](https://help.github.com/articles/setting-up-an-apex-domain/#configuring-a-records-with-your-dns-provider)s.
 4. Update your domain in `docs/CNAME`.
 5. Create a new [Firebase](https://console.firebase.google.com/) project and get your credentials.
-6. Update your Firebase credentials in `src/js/firebaseConfig.js`.
+6. Update your Firebase credentials in `src/js/fire.js`.
 7. You're ready to go.
 
 ## Dev
