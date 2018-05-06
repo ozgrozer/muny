@@ -19,7 +19,8 @@ class App extends React.Component {
       },
       lastTaskId: 0,
       disabledForm: false,
-      clientIp: ''
+      clientIp: '',
+      activeFilter: 'all'
     }
   }
 
@@ -160,6 +161,12 @@ class App extends React.Component {
       })
   }
 
+  changeFilter (section) {
+    this.setState({
+      activeFilter: section
+    })
+  }
+
   render () {
     let tasks
     const getTasks = this.state.tasks
@@ -176,6 +183,7 @@ class App extends React.Component {
             <li key={i} className='list-group-item'>
               <div className='custom-control custom-checkbox'>
                 <input type='checkbox' className='custom-control-input' id={`customCheck${i}`} checked={checked} onChange={this.doneOrUndoneTask.bind(this, i, checked)} />
+
                 <label className='custom-control-label' htmlFor={`customCheck${i}`}>{taskName}</label>
               </div>
 
@@ -202,6 +210,7 @@ class App extends React.Component {
       <div className='container'>
         <div className='container2'>
           <h2>Muny</h2>
+
           <p>
             A todo app with <a href='https://github.com/ozgrozer/muny#resources' target='_blank'>free resources</a>
           </p>
@@ -210,10 +219,12 @@ class App extends React.Component {
             <fieldset disabled={this.state.disabledForm}>
               <div className='form-group'>
                 <input type='text' name='task' placeholder='New task' className='form-control form-control-lg' required value={this.state.formItemTask} onChange={this.handleInput.bind(this)} ref={(input) => { this.inputTask = input }} />
+
                 <div className='invalid-feedback'>
                   You didn't write something
                 </div>
               </div>
+
               <div className='form-group'>
                 <button type='submit' className='btn btn-primary btn-lg btn-block'>Add</button>
               </div>
@@ -237,11 +248,38 @@ class App extends React.Component {
                   <div className='float-left'>
                     {itemsLeft}
                   </div>
+
                   <div className='float-right'>
                     <div className='btn-group'>
-                      <button className='btn btn-light btn-sm active'>All</button>
-                      <button className='btn btn-light btn-sm'>Active</button>
-                      <button className='btn btn-light btn-sm'>Completed</button>
+                      <button
+                        className={
+                          'btn btn-light btn-sm' +
+                          (this.state.activeFilter === 'all' ? ' active' : '')
+                        }
+                        onClick={this.changeFilter.bind(this, 'all')}
+                      >
+                        All
+                      </button>
+
+                      <button
+                        className={
+                          'btn btn-light btn-sm' +
+                          (this.state.activeFilter === 'active' ? ' active' : '')
+                        }
+                        onClick={this.changeFilter.bind(this, 'active')}
+                      >
+                        Active
+                      </button>
+
+                      <button
+                        className={
+                          'btn btn-light btn-sm' +
+                          (this.state.activeFilter === 'completed' ? ' active' : '')
+                        }
+                        onClick={this.changeFilter.bind(this, 'completed')}
+                      >
+                        Completed
+                      </button>
                     </div>
                   </div>
                 </div>
