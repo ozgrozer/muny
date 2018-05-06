@@ -167,7 +167,7 @@ class App extends React.Component {
     })
   }
 
-  render () {
+  tasksForView () {
     let tasks
     const getTasks = {}
     for (let key in this.state.tasks) {
@@ -207,6 +207,10 @@ class App extends React.Component {
       }
     }
 
+    return tasks
+  }
+
+  render () {
     let itemsLeft
     const activeTasks = this.state.tasksCount.active
     if (activeTasks > 1) {
@@ -249,7 +253,7 @@ class App extends React.Component {
 
             <div>
               <ul className='list-group list-group-flush'>
-                {tasks}
+                {this.tasksForView()}
               </ul>
             </div>
 
