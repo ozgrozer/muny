@@ -4,6 +4,25 @@ A todo app with free resources
 
 [https://muny.ml](https://muny.ml)
 
+## Usage
+
+1. Fork this repo.
+2. Register your domain at [Freenom](http://www.freenom.com/en/index.html?lang=en).
+3. Create `A` records in [Freenom](https://my.freenom.com/clientarea.php?action=domains&language=english) (`Manage Domain/Manage Freenom DNS`) to point your domain to the [GitHub IP](https://help.github.com/articles/setting-up-an-apex-domain/#configuring-a-records-with-your-dns-provider)s.
+4. Update your domain in `docs/CNAME`.
+5. Create a new [Firebase](https://console.firebase.google.com/) project and get your credentials.
+6. Update your Firebase credentials in `src/js/firebaseConfig.js`.
+7. You're ready to go.
+
+## Dev
+
+1. Fork this repo.
+2. Clone your repo to your local computer with `git clone`.
+3. Install dependencies with `yarn install` or `npm install`.
+4. Start development with `yarn start` or `npm start`.
+5. Build your app with `yarn build` or `npm run build`.
+6. Push your code.
+
 ## Resources
 
 1. [Freenom](http://www.freenom.com/en/index.html?lang=en) for free `.ml` TLD.
