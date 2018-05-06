@@ -13,7 +13,7 @@ class App extends React.Component {
       tasksLoading: true,
       tasks: {},
       tasksCount: {
-        total: 0,
+        all: 0,
         active: 0,
         completed: 0
       },
@@ -65,7 +65,7 @@ class App extends React.Component {
   tasksCount () {
     const getTasks = this.state.tasks
     const count = {
-      total: Object.keys(getTasks).length,
+      all: Object.keys(getTasks).length,
       active: 0,
       completed: 0
     }
@@ -169,25 +169,36 @@ class App extends React.Component {
 
   render () {
     let tasks
-    const getTasks = this.state.tasks
+    const getTasks = {}
+    for (let key in this.state.tasks) {
+      const task = this.state.tasks[key]
+      if (this.state.activeFilter === 'all') {
+        getTasks[key] = task
+      } else if (this.state.activeFilter === 'active' && !task.done) {
+        getTasks[key] = task
+      } else if (this.state.activeFilter === 'completed' && task.done) {
+        getTasks[key] = task
+      }
+    }
+
     if (this.state.tasksLoading) {
       tasks = <li className='list-group-item'>Loading...</li>
     } else {
       if (Object.keys(getTasks).length) {
-        tasks = Object.keys(getTasks).reverse().map((i) => {
-          const getTask = getTasks[i]
+        tasks = Object.keys(getTasks).reverse().map((key) => {
+          const getTask = getTasks[key]
           const checked = getTask.done || false
           const taskName = getTask.done ? (<strike>{getTask.task || 'Unnamed'}</strike>) : getTask.task || 'Unnamed'
 
           return (
-            <li key={i} className='list-group-item'>
+            <li key={key} className='list-group-item'>
               <div className='custom-control custom-checkbox'>
-                <input type='checkbox' className='custom-control-input' id={`customCheck${i}`} checked={checked} onChange={this.doneOrUndoneTask.bind(this, i, checked)} />
+                <input type='checkbox' className='custom-control-input' id={`customCheck${key}`} checked={checked} onChange={this.doneOrUndoneTask.bind(this, key, checked)} />
 
-                <label className='custom-control-label' htmlFor={`customCheck${i}`}>{taskName}</label>
+                <label className='custom-control-label' htmlFor={`customCheck${key}`}>{taskName}</label>
               </div>
 
-              <button className='btn btn-danger btn-sm deleteTask' onClick={this.deleteTask.bind(this, i)}>Delete</button>
+              <button className='btn btn-danger btn-sm deleteTask' onClick={this.deleteTask.bind(this, key)}>Delete</button>
             </li>
           )
         })
@@ -243,7 +254,7 @@ class App extends React.Component {
             </div>
 
             {
-              !this.state.tasksLoading && Object.keys(getTasks).length ? (
+              !this.state.tasksLoading && this.state.tasksCount.all ? (
                 <div className='card-footer'>
                   <div className='float-left'>
                     {itemsLeft}
