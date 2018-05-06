@@ -1,4 +1,4 @@
-@import './bootstrapPlugins';
+@import './bootstrapComponents';
 
 /* Breakpoints (Bootstrap defaults) */
 $xsBreakpoint: map-get($grid-breakpoints, 'sm') - 1;
