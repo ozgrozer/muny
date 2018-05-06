@@ -21,21 +21,32 @@ body {
 
 .card {
   margin-top: 50px;
-}
 
-.list-group-item {
-  &:hover {
+  .list-group-item {
+    &:hover {
+      .deleteTask {
+        display: block;
+      }
+    }
+
     .deleteTask {
-      display: block;
+      top: 12px;
+      right: 20px;
+      display: none;
+      font-size: 10px;
+      position: absolute;
+      text-transform: uppercase;
     }
   }
 
-  .deleteTask {
-    top: 12px;
-    right: 20px;
-    display: none;
-    font-size: 10px;
-    position: absolute;
-    text-transform: uppercase;
+  .card-footer {
+    .float-left {
+      line-height: 25px;
+    }
+
+    button {
+      font-size: 10px;
+      text-transform: uppercase;
+    }
   }
 }

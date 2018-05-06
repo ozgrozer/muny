@@ -12,6 +12,11 @@ class App extends React.Component {
       formItemTask: '',
       tasksLoading: true,
       tasks: {},
+      tasksCount: {
+        total: 0,
+        active: 0,
+        completed: 0
+      },
       lastTaskId: 0,
       disabledForm: false,
       clientIp: ''
@@ -47,12 +52,32 @@ class App extends React.Component {
           }
 
           this.setState({ tasks })
+          this.tasksCount()
         }
 
         this.setState({
           tasksLoading: false
         })
       })
+  }
+
+  tasksCount () {
+    const getTasks = this.state.tasks
+    const count = {
+      total: Object.keys(getTasks).length,
+      active: 0,
+      completed: 0
+    }
+
+    Object.keys(getTasks).map((key) => {
+      const task = getTasks[key]
+      if (task.done) count.completed++
+      if (!task.done) count.active++
+    })
+
+    this.setState({
+      tasksCount: count
+    })
   }
 
   handleForm (e) {
@@ -95,6 +120,7 @@ class App extends React.Component {
             lastTaskId: newId,
             tasks
           })
+          this.tasksCount()
 
           this.inputTask.focus()
         }
@@ -111,6 +137,7 @@ class App extends React.Component {
           delete tasks[taskId]
 
           this.setState({ tasks })
+          this.tasksCount()
         }
       })
   }
@@ -128,6 +155,7 @@ class App extends React.Component {
           tasks[taskId].done = done
 
           this.setState({ tasks })
+          this.tasksCount()
         }
       })
   }
@@ -135,7 +163,6 @@ class App extends React.Component {
   render () {
     let tasks
     const getTasks = this.state.tasks
-
     if (this.state.tasksLoading) {
       tasks = <li className='list-group-item'>Loading...</li>
     } else {
@@ -159,6 +186,16 @@ class App extends React.Component {
       } else {
         tasks = <li className='list-group-item'>No task found.</li>
       }
+    }
+
+    const activeTasks = this.state.tasksCount.active
+    let itemsLeft
+    if (activeTasks > 1) {
+      itemsLeft = `${activeTasks} items left`
+    } else if (activeTasks === 1) {
+      itemsLeft = `${activeTasks} item left`
+    } else {
+      itemsLeft = 'All done'
     }
 
     return (
@@ -192,6 +229,19 @@ class App extends React.Component {
               <ul className='list-group list-group-flush'>
                 {tasks}
               </ul>
+            </div>
+
+            <div className='card-footer'>
+              <div className='float-left'>
+                {itemsLeft}
+              </div>
+              <div className='float-right'>
+                <div className='btn-group'>
+                  <button className='btn btn-light btn-sm active'>All</button>
+                  <button className='btn btn-light btn-sm'>Active</button>
+                  <button className='btn btn-light btn-sm'>Completed</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
