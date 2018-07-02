@@ -26,7 +26,7 @@ class App extends React.Component {
 
   componentDidMount () {
     axios
-      .get('https://json.geoiplookup.io/api')
+      .get('https://json.geoiplookup.io/8.8.8.8')
       .then((res) => {
         this.setState({
           clientIp: res.data.ip
