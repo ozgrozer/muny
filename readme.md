@@ -2,7 +2,9 @@
 
 A todo app with free resources
 
-[https://muny.ml](https://muny.ml)
+[https://ozgrozer-muny.web.app/](https://ozgrozer-muny.web.app/)
+
+<img src="./preview/1.jpg" alt="" width="400" />
 
 ## Usage
 
